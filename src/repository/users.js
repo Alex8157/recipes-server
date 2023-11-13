@@ -19,7 +19,7 @@ class UsersRepository extends BaseTransactionRepository {
       const [userId] = await this.db('users').insert({ email, password: hashedPassword }, ['id']);
       return userId;
     } catch (error) {
-      // console.error('Error creating user:', error);
+      console.error('Error creating user:', error);
       throw error;
     }
   }
@@ -36,7 +36,7 @@ class UsersRepository extends BaseTransactionRepository {
       const hashedPassword = this.hashPassword(password);
       await this.db('users').where({ id: userId }).update({ email, password: hashedPassword });
     } catch (error) {
-      // console.error('Error updating user:', error);
+      console.error('Error updating user:', error);
       throw error;
     }
   }
@@ -81,7 +81,7 @@ class UsersRepository extends BaseTransactionRepository {
       const sessionId = await this.createSession(user.id);
       return sessionId;
     } catch (error) {
-      // console.error('Error logging in user:', error);
+      console.error('Error logging in user:', error);
       throw error;
     }
   }
@@ -95,7 +95,7 @@ class UsersRepository extends BaseTransactionRepository {
     try {
       await this.db('sessions').where({ id: sessionId }).del();
     } catch (error) {
-      // console.error('Error logging out user:', error);
+      console.error('Error logging out user:', error);
       throw error;
     }
   }
@@ -110,7 +110,7 @@ class UsersRepository extends BaseTransactionRepository {
         const result = await this.db('sessions').where({ id: sessionId }).select('user_id').first();
         return result ? result.user_id : null;
     } catch (error) {
-        // console.error('Error getting user id from session:', error);
+        console.error('Error getting user id from session:', error);
         return null;
     }
   }
@@ -126,7 +126,7 @@ async createSession(userId) {
     await this.db('sessions').insert({ id: sessionId, user_id: userId });
     return sessionId;
   } catch (error) {
-    // console.error('Error creating session:', error);
+    console.error('Error creating session:', error);
     throw error;
   }
 }
