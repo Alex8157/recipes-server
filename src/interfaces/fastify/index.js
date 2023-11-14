@@ -1,4 +1,5 @@
 const fastify = require('fastify')();
+const { port } = require('../../config/index');
 const { usersService } = require('../../services');
 const { recipesService } = require('../../services');
 
@@ -135,7 +136,7 @@ const start = () => {
         reply.send({ message: 'Рецепт удален успешно' });
     });
 
-    fastify.listen({ port: 3000 });
+    fastify.listen({ port });
 };
 
 module.exports = { start };

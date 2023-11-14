@@ -18,6 +18,8 @@ const {
   KNEX_MIGRATION_TABLE,
   // Output parameters
   KNEX_DEBUG,
+  //Port of service
+  PORT,
 } = process.env;
 
 const config = {
@@ -49,6 +51,7 @@ const config = {
       stub: './migration.stub.js',
     },
   },
+  port: PORT && Number.parseInt(PORT, 10),
 };
 
 module.exports = config;
