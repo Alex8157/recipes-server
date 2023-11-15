@@ -1,9 +1,23 @@
-const fastify = require('fastify')();
-const { port } = require('../../config/index');
+const fastifyFactory = require('fastify');
+const { port, logsLevel } = require('../../config/index');
 const { usersService } = require('../../services');
 const { recipesService } = require('../../services');
 
 const start = () => {
+    //Создание сервера
+    const fastify = fastifyFactory({ 
+        logger: { 
+            level: logsLevel,
+            transport: {
+                target: 'pino-pretty',
+                options: {
+                translateTime: 'HH:MM:ss Z',
+                ignore: 'pid,hostname',
+                },
+            },
+        } 
+    });
+
     // Подставляем в запросы id пользователя
     fastify.addHook('preParsing', async (request) => {
         const cookiesHeader = request.headers.cookie;
