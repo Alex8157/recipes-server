@@ -49,6 +49,14 @@ describe('API Tests', () => {
         expect(response.headers.get('set-cookie')).toContain('session_id');
     });
 
+    test ('should check the user`s authorization', async () => {
+        const response = await requestFetch({URL: '/check-auth', method: 'GET'});
+        const data = await response.json();
+
+        expect(response.status).toBe(200);
+        expect(data).toHaveProperty('isAuthenticated', true);
+    });
+
     test ('should update user data', async () => {
         const response = await requestFetch({URL: '/users', method: 'PATCH', body: { email: 'newemail@example.com', password: 'newpassword' }});
         const data = await response.json();
@@ -173,21 +181,21 @@ describe('API Tests', () => {
         expect(data[0]).toEqual(expectedRecipe);
     });
 
-    // test ('should delete a recipe', async () => {
-    //     const response = await requestFetch({URL: `/recipes/${recipeId}`, method: 'DELETE'});
+    test ('should delete a recipe', async () => {
+        const response = await requestFetch({URL: `/recipes/${recipeId}`, method: 'DELETE'});
 
-    //     const data = await response.json();
+        const data = await response.json();
 
-    //     expect(response.status).toBe(200);
-    //     expect(data).toHaveProperty('message', 'Рецепт удален успешно');
-    // });
+        expect(response.status).toBe(200);
+        expect(data).toHaveProperty('message', 'Рецепт удален успешно');
+    });
 
-    // test ('should delete a user', async () => {
-    //     const response = await requestFetch({URL: `/users`, method: 'DELETE'});
+    test ('should delete a user', async () => {
+        const response = await requestFetch({URL: `/users`, method: 'DELETE'});
 
-    //     const data = await response.json();
+        const data = await response.json();
 
-    //     expect(response.status).toBe(200);
-    //     expect(data).toHaveProperty( 'message', 'User deleted successfully' );
-    // });
+        expect(response.status).toBe(200);
+        expect(data).toHaveProperty( 'message', 'User deleted successfully' );
+    });
 });

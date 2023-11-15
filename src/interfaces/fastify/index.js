@@ -37,6 +37,14 @@ const start = () => {
         }
     });
 
+    // Проверка авторизации пользователя
+    fastify.get('/check-auth', async (request, reply) => {
+        const userId = request.local.userId;
+        const isAuthenticated = !!userId;
+    
+        reply.send({ isAuthenticated });
+    });
+
     // Создание нового пользователя и вход
     fastify.post('/users', async (request, reply) => {
         const { email, password } = request.body;
@@ -150,7 +158,8 @@ const start = () => {
         reply.send({ message: 'Рецепт удален успешно' });
     });
 
-    fastify.listen({ port, host: '0.0.0.0' });
+    fastify.listen({ port, host: '0.0.0.0' }); //Для деплоя
+    // fastify.listen({ port }); //Для локалки
 };
 
 module.exports = { start };
