@@ -1,4 +1,5 @@
 const fastifyFactory = require('fastify');
+const cors = require('@fastify/cors');
 const { port, logsLevel } = require('../../config/index');
 const { usersService } = require('../../services');
 const { recipesService } = require('../../services');
@@ -16,6 +17,13 @@ const start = () => {
                 },
             },
         } 
+    });
+    
+    //Добавление доверенных путей
+    fastify.register(cors, {
+        origin: 'http://localhost:3000',
+        methods: ['GET', 'PATCH', 'POST', 'DELETE'],
+        credentials: true,
     });
 
     // Подставляем в запросы id пользователя
