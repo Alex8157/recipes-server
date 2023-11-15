@@ -21,7 +21,9 @@ const {
   //Port of service
   PORT,
   //Logs level
-  LOGS_LEVEL
+  LOGS_LEVEL,
+  //Trusted URL
+  TRUSTED_URL
 } = process.env;
 
 const config = {
@@ -55,6 +57,7 @@ const config = {
   },
   port: PORT && Number.parseInt(PORT, 10),
   logsLevel: LOGS_LEVEL || 'info',
+  trustedURL: TRUSTED_URL || 'http://localhost:3000',
 };
 
 module.exports = config;
