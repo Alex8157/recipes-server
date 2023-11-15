@@ -57,7 +57,7 @@ const start = () => {
     fastify.post('/users', async (request, reply) => {
         const { email, password } = request.body;
         const { userId, sessionId } = await usersService.createUserAndLogin(email, password);
-        reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly;  Max-Age=2592000`);
+        reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly;  Max-Age=2592000; SameSite=None; Secure`);
 
         reply.send({ userId });
     });
@@ -74,7 +74,7 @@ const start = () => {
     fastify.delete('/users', async (request, reply) => {
         const userId = request.local.userId;
         await usersService.deleteUser(userId);
-        reply.header('Set-Cookie', `session_id=; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+        reply.header('Set-Cookie', `session_id=; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure`);
         reply.send({ message: 'User deleted successfully' });
     });
 
@@ -83,7 +83,7 @@ const start = () => {
         const { email, password } = request.body;
         const sessionId = await usersService.loginUser(email, password);
         if (sessionId) {
-            reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly; Max-Age=2592000`);
+            reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly; Max-Age=2592000; SameSite=None; Secure`);
             reply.send({ message: 'Logged in successfully' });
         } else {
             reply.status(401).send({ message: 'Invalid credentials' });
@@ -103,7 +103,7 @@ const start = () => {
             const sessionId = cookies['session_id'];
             if (sessionId) {
                 await usersService.logoutUser(sessionId);
-                reply.header('Set-Cookie', `session_id=; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+                reply.header('Set-Cookie', `session_id=; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure`);
                 reply.send({ message: 'Logged out successfully' });
             } else {
                 reply.status(401).send({ message: 'Not logged in' });
