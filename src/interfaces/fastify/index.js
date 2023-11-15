@@ -57,7 +57,7 @@ const start = () => {
     fastify.post('/users', async (request, reply) => {
         const { email, password } = request.body;
         const { userId, sessionId } = await usersService.createUserAndLogin(email, password);
-        reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly; Path=/`);
+        reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly`);
 
         reply.send({ userId });
     });
@@ -83,7 +83,7 @@ const start = () => {
         const { email, password } = request.body;
         const sessionId = await usersService.loginUser(email, password);
         if (sessionId) {
-            reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly; Path=/`);
+            reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly`);
             reply.send({ message: 'Logged in successfully' });
         } else {
             reply.status(401).send({ message: 'Invalid credentials' });
