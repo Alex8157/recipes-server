@@ -74,7 +74,7 @@ const start = () => {
     fastify.delete('/users', async (request, reply) => {
         const userId = request.local.userId;
         await usersService.deleteUser(userId);
-        reply.header('Set-Cookie', `session_id=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+        reply.header('Set-Cookie', `session_id=; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT`);
         reply.send({ message: 'User deleted successfully' });
     });
 
@@ -103,7 +103,7 @@ const start = () => {
             const sessionId = cookies['session_id'];
             if (sessionId) {
                 await usersService.logoutUser(sessionId);
-                reply.header('Set-Cookie', `session_id=; HttpOnly; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`);
+                reply.header('Set-Cookie', `session_id=; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT`);
                 reply.send({ message: 'Logged out successfully' });
             } else {
                 reply.status(401).send({ message: 'Not logged in' });
