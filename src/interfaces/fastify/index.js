@@ -39,7 +39,7 @@ const start = () => {
 
     // Проверка авторизации пользователя
     fastify.get('/check-auth', async (request, reply) => {
-        const userId = request.local.userId;
+        const userId = request.local?.userId;
         const isAuthenticated = !!userId;
     
         reply.send({ isAuthenticated });

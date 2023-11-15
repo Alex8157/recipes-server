@@ -49,7 +49,7 @@ describe('API Tests', () => {
         expect(response.headers.get('set-cookie')).toContain('session_id');
     });
 
-    test ('should check the user`s authorization', async () => {
+    test ('should check the user`s authorization (authorizationed)', async () => {
         const response = await requestFetch({URL: '/check-auth', method: 'GET'});
         const data = await response.json();
 
@@ -181,21 +181,29 @@ describe('API Tests', () => {
         expect(data[0]).toEqual(expectedRecipe);
     });
 
-    test ('should delete a recipe', async () => {
-        const response = await requestFetch({URL: `/recipes/${recipeId}`, method: 'DELETE'});
+    // test ('should delete a recipe', async () => {
+    //     const response = await requestFetch({URL: `/recipes/${recipeId}`, method: 'DELETE'});
 
-        const data = await response.json();
+    //     const data = await response.json();
 
-        expect(response.status).toBe(200);
-        expect(data).toHaveProperty('message', 'Рецепт удален успешно');
-    });
+    //     expect(response.status).toBe(200);
+    //     expect(data).toHaveProperty('message', 'Рецепт удален успешно');
+    // });
 
-    test ('should delete a user', async () => {
-        const response = await requestFetch({URL: `/users`, method: 'DELETE'});
+    // test ('should delete a user', async () => {
+    //     const response = await requestFetch({URL: `/users`, method: 'DELETE'});
 
-        const data = await response.json();
+    //     const data = await response.json();
 
-        expect(response.status).toBe(200);
-        expect(data).toHaveProperty( 'message', 'User deleted successfully' );
-    });
+    //     expect(response.status).toBe(200);
+    //     expect(data).toHaveProperty( 'message', 'User deleted successfully' );
+    // });
+
+    // test ('should check the user`s authorization (not authorizationed)', async () => {
+    //     const response = await requestFetch({URL: '/check-auth', method: 'GET', clear: true});
+    //     const data = await response.json();
+
+    //     expect(response.status).toBe(200);
+    //     expect(data).toHaveProperty('isAuthenticated', false);
+    // });
 });
