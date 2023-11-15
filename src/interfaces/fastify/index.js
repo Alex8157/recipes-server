@@ -150,7 +150,7 @@ const start = () => {
         reply.send({ message: 'Рецепт удален успешно' });
     });
 
-    fastify.listen({ port });
+    fastify.listen({ port, host: '0.0.0.0' });
 };
 
 module.exports = { start };
