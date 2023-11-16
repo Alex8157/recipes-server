@@ -50,7 +50,7 @@ const start = () => {
         const { email, password } = request.body;
         const { userId, sessionId } = await usersService.createUserAndLogin(email, password);
 
-        reply.header('session-id', sessionId);
+        reply.header('x-session-id', sessionId);
         reply.send({ userId });
     });
 
@@ -75,7 +75,7 @@ const start = () => {
         const { email, password } = request.body;
         const sessionId = await usersService.loginUser(email, password);
         if (sessionId) {
-            reply.header('session-id', sessionId);
+            reply.header('x-session-id', sessionId);
             reply.send({ message: 'Logged in successfully' });
         } else {
             reply.status(401).send({ message: 'Invalid credentials' });
