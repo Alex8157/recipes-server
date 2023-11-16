@@ -28,20 +28,12 @@ const start = () => {
 
     // Подставляем в запросы id пользователя
     fastify.addHook('preParsing', async (request) => {
-        const cookiesHeader = request.headers.cookie;
-        if (cookiesHeader) {
-            const cookiesArray = cookiesHeader.split(';');
-            const cookies = cookiesArray.reduce((object, cookie) => {
-                const [key, value] = cookie.split('=');
-                object[key] = value;
-                return object;
-            }, {});
+        const authorizationHeader = request.headers.authorization;
     
-            const sessionIdCookieId = cookies['session_id'];
-            if (sessionIdCookieId) {
-                const userId = await usersService.getSessionUserId(sessionIdCookieId);
-                request.local = { userId };
-            }
+        if (authorizationHeader) {
+            const token = authorizationHeader.replace('Bearer ', '');
+            const userId = await usersService.getSessionUserId(token);
+            request.local = { userId };
         }
     });
 
@@ -57,8 +49,8 @@ const start = () => {
     fastify.post('/users', async (request, reply) => {
         const { email, password } = request.body;
         const { userId, sessionId } = await usersService.createUserAndLogin(email, password);
-        reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly;  Max-Age=2592000; SameSite=None; Secure`);
 
+        reply.header('user-id', sessionId);
         reply.send({ userId });
     });
 
@@ -74,7 +66,7 @@ const start = () => {
     fastify.delete('/users', async (request, reply) => {
         const userId = request.local.userId;
         await usersService.deleteUser(userId);
-        reply.header('Set-Cookie', `session_id=; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure`);
+
         reply.send({ message: 'User deleted successfully' });
     });
 
@@ -83,7 +75,7 @@ const start = () => {
         const { email, password } = request.body;
         const sessionId = await usersService.loginUser(email, password);
         if (sessionId) {
-            reply.header('Set-Cookie', `session_id=${sessionId}; HttpOnly; Max-Age=2592000; SameSite=None; Secure`);
+            reply.header('user-id', sessionId);
             reply.send({ message: 'Logged in successfully' });
         } else {
             reply.status(401).send({ message: 'Invalid credentials' });
@@ -103,7 +95,6 @@ const start = () => {
             const sessionId = cookies['session_id'];
             if (sessionId) {
                 await usersService.logoutUser(sessionId);
-                reply.header('Set-Cookie', `session_id=; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure`);
                 reply.send({ message: 'Logged out successfully' });
             } else {
                 reply.status(401).send({ message: 'Not logged in' });
