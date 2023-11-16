@@ -50,7 +50,7 @@ const start = () => {
         const { email, password } = request.body;
         const { userId, sessionId } = await usersService.createUserAndLogin(email, password);
 
-        reply.header('user-id', sessionId);
+        reply.header('session-id', sessionId);
         reply.send({ userId });
     });
 
@@ -75,7 +75,7 @@ const start = () => {
         const { email, password } = request.body;
         const sessionId = await usersService.loginUser(email, password);
         if (sessionId) {
-            reply.header('user-id', sessionId);
+            reply.header('session-id', sessionId);
             reply.send({ message: 'Logged in successfully' });
         } else {
             reply.status(401).send({ message: 'Invalid credentials' });
@@ -84,21 +84,12 @@ const start = () => {
 
     // Выход пользователя (удаление сессии)
     fastify.post('/logout', async (request, reply) => {
-        const cookiesHeader = request.headers.cookie; 
-        if (cookiesHeader) {
-            const cookiesArray = cookiesHeader.split(';');
-            const cookies = cookiesArray.reduce((object, cookie) => {
-                const [key, value] = cookie.split('=');
-                object[key] = value;
-                return object;
-            }, {});
-            const sessionId = cookies['session_id'];
-            if (sessionId) {
-                await usersService.logoutUser(sessionId);
-                reply.send({ message: 'Logged out successfully' });
-            } else {
-                reply.status(401).send({ message: 'Not logged in' });
-            }  
+        const sessionId = request.headers.authorization;
+        if (sessionId) {
+            await usersService.logoutUser(sessionId);
+            reply.send({ message: 'Logged out successfully' });
+        }   else {
+            reply.status(401).send({ message: 'Not logged in' });
         }
     });
 
