@@ -50,8 +50,7 @@ const start = () => {
         const { email, password } = request.body;
         const { userId, sessionId } = await usersService.createUserAndLogin(email, password);
 
-        reply.header('x-session-id', sessionId);
-        reply.send({ userId });
+        reply.send({ userId, sessionId: sessionId });
     });
 
     // Редактирование данных пользователя
@@ -75,8 +74,7 @@ const start = () => {
         const { email, password } = request.body;
         const sessionId = await usersService.loginUser(email, password);
         if (sessionId) {
-            reply.header('x-session-id', sessionId);
-            reply.send({ message: 'Logged in successfully' });
+            reply.send({ message: 'Logged in successfully', sessionId: sessionId });
         } else {
             reply.status(401).send({ message: 'Invalid credentials' });
         }
