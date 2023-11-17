@@ -31,8 +31,7 @@ const start = () => {
         const authorizationHeader = request.headers.authorization;
     
         if (authorizationHeader) {
-            const token = authorizationHeader.replace('Bearer ', '');
-            const userId = await usersService.getSessionUserId(token);
+            const userId = await usersService.getSessionUserId(authorizationHeader);
             request.local = { userId };
         }
     });
