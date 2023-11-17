@@ -42,6 +42,25 @@ class UsersRepository extends BaseTransactionRepository {
   }
 
   /**
+   * Получение почты авторизации
+   * @param {number} userId - ID пользователя
+   * @returns {Promise<void>}
+   */
+  async getEmail(userId) {
+    try {
+      const email = await this.db('users').where({ id: userId }).select('email');
+      if (email.length > 0) {
+        return email[0];
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error getting users data:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Удаление пользователя
    * @param {number} userId - ID пользователя
    * @returns {Promise<void>}

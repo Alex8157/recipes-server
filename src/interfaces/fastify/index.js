@@ -60,6 +60,13 @@ const start = () => {
         reply.send({ message: 'User updated successfully' });
     });
 
+    // Получение данных пользователя
+    fastify.get('/users', async () => {
+        const userId = request.local.userId;
+        const email = await usersService.getEmail(userId);
+        reply.send(email);
+    });
+
     // Удаление пользователя
     fastify.delete('/users', async (request, reply) => {
         const userId = request.local.userId;

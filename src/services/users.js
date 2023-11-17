@@ -30,6 +30,15 @@ class UsersService {
   }
 
   /**
+   * Получение почты авторизации
+   * @param {number} userId - ID пользователя
+   * @returns {Promise<void>}
+   */
+  async getEmail(userId) {
+    return await usersRepository.getEmail(userId);
+  }
+
+  /**
    * Удаление пользователя
    * @param {number} userId - ID пользователя
    * @returns {Promise<void>}
