@@ -61,7 +61,7 @@ const start = () => {
     });
 
     // Получение данных пользователя
-    fastify.get('/users', async () => {
+    fastify.get('/users', async (request, reply) => {
         const userId = request.local.userId;
         const email = await usersService.getEmail(userId);
         reply.send(email);
