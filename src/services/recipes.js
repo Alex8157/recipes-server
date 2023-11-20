@@ -29,6 +29,15 @@ class RecipesService {
   async getRecipeById(recipeId) {
     return await resipesRepository.getRecipeById(recipeId);
   }
+  
+  /**
+   * Получения всех рецептов пользователя
+   * @param {UUID} userId - Идентификатор пользователя
+   * @returns 
+   */
+  async getAllRecipes(userId) {
+    return await resipesRepository.getAllRecipes(userId);
+  }
 
   /**
    * Проверка владельца рецепта

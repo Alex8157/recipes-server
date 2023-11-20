@@ -43,6 +43,18 @@ class ResipesRepository extends BaseTransactionRepository {
     .from('recipes')
     .where({ id: recipeId});
   }
+  
+  /**
+   * Получения всех рецептов пользователя
+   * @param {UUID} userId - Идентификатор пользователя
+   * @returns 
+   */
+  async getAllRecipes(userId) {
+    return await this.db
+    .select('*')
+    .from('recipes')
+    .where({ user_id: userId});
+  }
 
   /**
    * Проверка владельца рецепта

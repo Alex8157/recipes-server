@@ -118,6 +118,13 @@ const start = () => {
         const recipe = await recipesService.getRecipeById(recipeId);
         reply.send(recipe);
     });
+
+    // Получения всех рецептов пользователя
+    fastify.get('/recipes', async (request, reply) => {
+        const userId = request.local.userId;
+        const recipes = await recipesService.getAllRecipes(userId);
+        reply.send(recipes);
+    });
     
     // Проверка владельца рецепта
     fastify.get('/recipes/:recipeId/check-owner', async (request, reply) => {
