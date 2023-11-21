@@ -7,16 +7,14 @@ class ResipesRepository extends BaseTransactionRepository {
   }
   
   /**
-   * Получения всех категорий, в которых есть хотя бы один рецепт
+   * Получения всех категорий
    * @param {UUID} userId - Идентификатор пользователя
    * @returns 
    */
-  async getCategoriesWithRecipes(userId) {
+  async getCategories(userId) {
     return await this.db
-    .select('category.name')
-    .from('category')
-    .join('recipes', 'category.id', '=', 'recipes.category')
-    .where('recipes.user_id', '=', userId);
+    .select('*')
+    .from('category');
   }
   
   /**

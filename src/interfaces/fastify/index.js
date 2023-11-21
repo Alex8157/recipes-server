@@ -98,10 +98,10 @@ const start = () => {
         }
     });
 
-    // Получения всех категорий, в которых есть хотя бы один рецепт
+    // Получения всех категорий
     fastify.get('/categories', async (request, reply) => {
         const userId = request.local.userId;
-        const categories = await recipesService.getCategoriesWithRecipes(userId);
+        const categories = await recipesService.getCategories(userId);
         reply.send(categories);
     });
 
