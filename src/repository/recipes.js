@@ -8,10 +8,9 @@ class ResipesRepository extends BaseTransactionRepository {
   
   /**
    * Получения всех категорий
-   * @param {UUID} userId - Идентификатор пользователя
    * @returns 
    */
-  async getCategories(userId) {
+  async getCategories() {
     return await this.db
     .select('*')
     .from('category');

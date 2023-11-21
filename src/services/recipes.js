@@ -3,11 +3,10 @@ const { resipesRepository } = require('../repository');
 class RecipesService {
   /**
    * Получения всех категорий
-   * @param {UUID} userId - Идентификатор пользователя
    * @returns 
    */
-  async getCategories(userId) {
-    return await resipesRepository.getCategories(userId);
+  async getCategories() {
+    return await resipesRepository.getCategories();
   }
   
   /**
