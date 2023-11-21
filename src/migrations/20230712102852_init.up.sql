@@ -22,14 +22,15 @@ CREATE TABLE "recipes" (
 
 CREATE TABLE "sessions" (
   "id" UUID PRIMARY KEY,
-  "user_id" INTEGER REFERENCES "users"("id")
+  "user_id" INTEGER REFERENCES "users"("id"),
+  "expiration_date" TIMESTAMP
 );
 
 INSERT INTO "category" ("name") VALUES 
-  ('Snack'),
-  ('Salad'),
-  ('First course'),
-  ('Second course'),
-  ('Dessert'),
-  ('Drinks'),
-  ('Breakfast');
+  ('Закуски'),
+  ('Салаты'),
+  ('Первые блюда (супы)'),
+  ('Вторые блюда'),
+  ('Десерты'),
+  ('Напитки'),
+  ('Завтраки');

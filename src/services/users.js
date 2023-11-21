@@ -74,6 +74,14 @@ class UsersService {
   async getSessionUserId(sessionId) {
     return await usersRepository.getSessionUserId(sessionId)
   }
+
+  /**
+   * Удаление устаревших сессий
+   * @returns {Promise<void>}
+   */
+  async deleteExpiredSessions() {
+    return await usersRepository.deleteExpiredSessions()
+  }
 }
 
 module.exports = {

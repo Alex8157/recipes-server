@@ -134,21 +134,37 @@ class UsersRepository extends BaseTransactionRepository {
     }
   }
 
-/**
- * Создание сессии
- * @param {number} userId - ID пользователя
- * @returns {Promise<string>} - UUID сессии
- */
-async createSession(userId) {
-  try {
-    const sessionId = crypto.randomBytes(16).toString('hex');
-    await this.db('sessions').insert({ id: sessionId, user_id: userId });
-    return sessionId;
-  } catch (error) {
-    console.error('Error creating session:', error);
-    throw error;
+  /**
+   * Создание сессии
+   * @param {number} userId - ID пользователя
+   * @returns {Promise<string>} - UUID сессии
+   */
+  async createSession(userId) {
+    try {
+      const sessionId = crypto.randomBytes(16).toString('hex');
+      const currentDate = new Date();
+      const expirationDate = new Date(currentDate.getTime() + 14 * 24 * 60 * 60 * 1000);
+      await this.db('sessions').insert({ id: sessionId, user_id: userId, expiration_date: expirationDate });
+      return sessionId;
+    } catch (error) {
+      console.error('Error creating session:', error);
+      throw error;
+    }
   }
-}
+
+  /**
+   * Удаление устаревших сессий
+   * @returns {Promise<void>}
+   */
+  async deleteExpiredSessions() {
+    try {
+      const currentDate = new Date();
+      await this.db('sessions') .where('expiration_date', '<', currentDate).del();
+    } catch (error) {
+      console.error('Error deleting expired sessions:', error);
+      throw error;
+    }
+  }
 
   /**
    * Хеширование пароля

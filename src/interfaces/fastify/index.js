@@ -31,6 +31,7 @@ const start = () => {
         const authorizationHeader = request.headers.authorization;
     
         if (authorizationHeader) {
+            await usersService.deleteExpiredSessions();
             const userId = await usersService.getSessionUserId(authorizationHeader);
             request.local = { userId };
         }
