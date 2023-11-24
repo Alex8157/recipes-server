@@ -100,7 +100,6 @@ const start = () => {
 
     // Получения всех категорий
     fastify.get('/categories', async (request, reply) => {
-        const userId = request.local.userId;
         const categories = await recipesService.getCategories();
         reply.send(categories);
     });
